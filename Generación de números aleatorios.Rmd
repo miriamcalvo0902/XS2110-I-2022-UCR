@@ -1,0 +1,78 @@
+---
+title: "Generación de números aleatorios"
+output: pdf_document
+---
+Laboratorio de vectores y generación de números aleatorios. 
+
+Objetivo: Generar números aleatorios en R.
+
+Generemos números aleatorios
+
+R tiene funciones ya establecidas para generar números aleatorios:
+  
+_rnorm(# de obs, mean=, sd=): 	# números aleatorios de una distribución normal con media mean y desviación estándar sd
+
+_rnorm(#) 	# números aleatorios de una dist normal estándar
+
+_runif(# de obs, min=, max=)	# números aleatorios de una dist uniforme con mínimo y máximo
+
+_rexp(#, rate=)	# números aleatorios de una dist exponencial con parámetro=1/lambda
+
+_rpois(#, lambda=)	# números aleatorios de una dist Poisson con parámetro=lambda
+
+_rbinom(#,size=, prob=)	# números aleatorios de una dist binomial con n=size y p=prob
+
+_rnbinom(#, size, prob, mu)	# números aleatorios de una dist binomial negativa con n=size y p=prob, o mu=media
+
+_rgeom(#, prob)	# números aleatorios de una dist geométrica con p=prob
+
+Por ejemplo:
+                   
+Generemos 100 columnas de 10 números aleatorios cada una con una distribución normal
+estándar.
+Esta es la creación de una matriz con 100 columnas y 10 filas con números aleatorios
+de una distribución normal estándar
+
+
+```{r}
+matriznorm = matrix(rnorm(1000), nrow = 10, byrow = T)
+matriznorm[1:10, 1:10]
+```
+
+Con este comando lo pasamos a tipo dataframe
+
+```{r}
+norm = data.frame(matriznorm)
+names(norm)
+```
+
+Ahora generemos 1000 columnas con 10 números aleatorios cada una con una distribución normal.  
+Las primeras 10 filas son de una distribución normal con media=10 y desviación estándar=10.
+
+```{r}
+matriznorm2 = matrix(rnorm(10000, mean=10, sd=10), nrow = 10, byrow = T)
+matriznorm2[1:10, 1:10]
+```
+
+Ahora generemos 10000 columnas con 12 números aleatorios cada una 
+con una distribución Bernoulli con probabilidad p= 0.5.  
+
+```{r}
+bernoulli = matrix(rbinom(120000, size = 1, prob=0.5), nrow = 12, byrow = T)
+b = data.frame(bernoulli)
+
+b$X1
+
+```
+
+Cómo generarían 200 columnas de 50 renglones cada una,con números al azar de una distribución exponencial con parámetro rate=0.1
+
+```{r}
+matriz_exp = matrix(rexp(10000, rate=0.1), nrow = 50, byrow = T)
+matriz_exp[1:50,200]
+```
+
+
+
+
+
