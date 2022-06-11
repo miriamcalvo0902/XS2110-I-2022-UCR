@@ -1,0 +1,86 @@
+---
+title: "Ejemplos Bootstrap"
+author: "Miriam Calvo"
+date: '2022-06-09'
+output:
+  html_document:
+    df_print: paged
+  word_document: default
+  pdf_document: default
+---
+```{r}
+
+setwd("C:/Users/miria/OneDrive/Documentos")
+
+save(baseparaboot, file= "data.RData")
+```
+
+
+**Ejemplo 1.**
+
+**1.1.** Construya una función para poder estimar intervalos de bootstrap para la variancia del logaritmo natural del ingreso. La fórmula es la siguiente:
+
+$$ 
+Var(lnY) = \frac{1}{n-1}\sum_{i=1}^{n} \left(ln(y_i)-\overline{ln(y)}\right)^2
+
+$$
+
+**1.2.** Con 10000 remuestreos cree un intervalo no paramétrico de bootstrap para la variancia del logaritmo natural del ingreso
+
+```{r}
+
+#install.packages("boot")
+
+
+library(boot)
+
+ingreso <- baseparaboot$ingreso.3
+
+varln <- function(z,obs){
+  operacion <- var((log(z[obs])))
+  operacion
+  
+}
+
+varln(ingreso)
+
+j <- boot(ingreso, varln, R=10000)
+
+ci = boot.ci(j, type = "perc")
+ci
+
+```
+
+**1.3.** Cree un gráfico de caja con "la distribución muestral ateórica" del logaritmo natural del ingreso, tal y como lo presenta el investigador Fernández en la página 17, y presente el gráfico.
+
+```{r}
+ boxplot(j$t[,1])
+```
+
+**1.4.** El investigador Fernández usó tres índices de desigualdad: Gini, Theil y la variancia del logaritmo natural del ingreso. Sin embargo, existen otros indicadores de desigualdad del ingreso.
+
+Calcule un intervalo de confianza no paramétrico de bootstrap con 10000 remuestreos usando el índice de Atkinson.
+
+```{r}
+
+
+atkinson <- function(x,d){
+  
+  meanlog <- mean(log(x[d]))
+  
+  expmeanlog <- exp(meanlog)
+  
+  atk <- expmeanlog/mean(x[d])
+  
+}
+
+boot <- boot(ingreso, atkinson, R = 10000)
+
+print(boot)
+
+
+ci2 <- boot.ci(boot, type = "perc")
+ 
+print(ci2) 
+
+```
